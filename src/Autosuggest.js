@@ -10,6 +10,24 @@ const defaultRenderSuggestionsContainer = ({ containerProps, children }) => (
   <div {...containerProps}>{children}</div>
 );
 
+const getAttribute = (el, attr) => {
+    let value =
+        typeof el.getAttribute === 'function'
+            ? el.getAttribute(attr)
+            : el[attr];
+
+    if (!value) {
+        let attrs = el.attributes;
+        if (attrs) {
+            let length = attrs.length;
+            for (let i = 0; i < length; i++)
+                if (attrs[i].nodeName === attr) value = attrs[i].nodeValue;
+        }
+    }
+
+    return value;
+};
+
 export default class Autosuggest extends Component {
   static propTypes = {
     suggestions: PropTypes.array.isRequired,
@@ -259,10 +277,8 @@ export default class Autosuggest extends Component {
   }
 
   getSuggestionIndices(suggestionElement) {
-    const sectionIndex = suggestionElement.getAttribute('data-section-index');
-    const suggestionIndex = suggestionElement.getAttribute(
-      'data-suggestion-index'
-    );
+    const sectionIndex = getAttribute(suggestionElement, 'data-section-index');
+    const suggestionIndex = getAttribute(suggestionElement, 'data-suggestion-index');
 
     return {
       sectionIndex:
@@ -279,7 +295,7 @@ export default class Autosuggest extends Component {
       event.target;
 
     while (node !== null && node !== document) {
-      if (node.getAttribute('data-suggestion-index') !== null) {
+      if (getAttribute(node, 'data-suggestion-index') !== null) {
         // Suggestion was clicked
         return;
       }
@@ -298,7 +314,7 @@ export default class Autosuggest extends Component {
     let node = startNode;
 
     do {
-      if (node.getAttribute('data-suggestion-index') !== null) {
+      if (getAttribute(node, 'data-suggestion-index') !== null) {
         return node;
       }
 
