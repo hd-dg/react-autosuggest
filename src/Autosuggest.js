@@ -11,21 +11,19 @@ const defaultRenderSuggestionsContainer = ({ containerProps, children }) => (
 );
 
 const getAttribute = (el, attr) => {
-    let value =
-        typeof el.getAttribute === 'function'
-            ? el.getAttribute(attr)
-            : el[attr];
+  let value =
+    typeof el.getAttribute === 'function' ? el.getAttribute(attr) : el[attr];
 
-    if (!value) {
-        let attrs = el.attributes;
-        if (attrs) {
-            let length = attrs.length;
-            for (let i = 0; i < length; i++)
-                if (attrs[i].nodeName === attr) value = attrs[i].nodeValue;
-        }
+  if (!value) {
+    let attrs = el.attributes;
+    if (attrs) {
+      let length = attrs.length;
+      for (let i = 0; i < length; i++)
+        if (attrs[i].nodeName === attr) value = attrs[i].nodeValue;
     }
+  }
 
-    return value;
+  return value;
 };
 
 export default class Autosuggest extends Component {
@@ -278,7 +276,10 @@ export default class Autosuggest extends Component {
 
   getSuggestionIndices(suggestionElement) {
     const sectionIndex = getAttribute(suggestionElement, 'data-section-index');
-    const suggestionIndex = getAttribute(suggestionElement, 'data-suggestion-index');
+    const suggestionIndex = getAttribute(
+      suggestionElement,
+      'data-suggestion-index'
+    );
 
     return {
       sectionIndex:
